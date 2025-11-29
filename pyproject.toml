@@ -1,0 +1,104 @@
+[tool.poetry]
+name = "prothesis-triage-bot"
+version = "0.1.0"
+description = "Sistema inteligente de triagem de leads via WhatsApp para clínica de prótese dentária"
+authors = ["Seu Nome <seu@email.com>"]
+readme = "README.md"
+python = "^3.11"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+# Framework Web
+fastapi = "^0.109.0"
+uvicorn = {extras = ["standard"], version = "^0.27.0"}
+pydantic = "^2.5.0"
+pydantic-settings = "^2.1.0"
+
+# Banco de Dados
+sqlalchemy = "^2.0.25"
+alembic = "^1.13.1"
+asyncpg = "^0.29.0"  # Para PostgreSQL async
+
+# HTTP Client
+httpx = "^0.26.0"
+aiohttp = "^3.9.1"
+
+# IA e NLP
+openai = "^1.10.0"  # Compatível com DeepSeek
+langchain = "^0.1.0"
+langchain-community = "^0.0.14"
+
+# Utilitários
+python-dotenv = "^1.0.0"
+python-multipart = "^0.0.6"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+tenacity = "^8.2.3"  # Retry logic
+
+# Logging e Monitoramento
+loguru = "^0.7.2"
+sentry-sdk = {extras = ["fastapi"], version = "^1.40.0"}
+
+# Validação e Segurança
+email-validator = "^2.1.0"
+phonenumbers = "^8.13.27"
+
+[tool.poetry.group.dev.dependencies]
+# Testes
+pytest = "^7.4.4"
+pytest-asyncio = "^0.23.3"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.12.0"
+httpx = "^0.26.0"  # Para testar endpoints
+
+# Qualidade de Código
+black = "^23.12.1"
+ruff = "^0.1.11"
+mypy = "^1.8.0"
+pre-commit = "^3.6.0"
+
+# Debug
+ipython = "^8.20.0"
+ipdb = "^0.13.13"
+
+[tool.poetry.group.prod.dependencies]
+gunicorn = "^21.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 100
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=src --cov-report=html --cov-report=term-missing"
+asyncio_mode = "auto"
