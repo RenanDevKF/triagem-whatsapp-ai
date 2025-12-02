@@ -1,0 +1,64 @@
+# ========================================
+# CORE API & WEB FRAMEWORK
+# ========================================
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+starlette==0.35.1
+
+# ========================================
+# VALIDAÇÃO & CONFIGURAÇÃO  
+# ========================================
+pydantic==2.12.5
+pydantic_core==2.41.5
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+
+# ========================================
+# BANCO DE DADOS (SQLite - desenvolvimento)
+# ========================================
+sqlalchemy==2.0.25
+aiosqlite==0.19.0
+alembic==1.13.1
+greenlet==3.2.4
+
+# ========================================
+# LOGGING & MONITORAMENTO
+# ========================================
+loguru==0.7.2
+sentry-sdk==1.40.0
+
+# ========================================
+# HTTP & REQUESTS
+# ========================================
+httpx==0.26.0
+httpcore==1.0.9
+
+# ========================================
+# IA & PROCESSAMENTO
+# ========================================
+openai==1.10.0
+langchain==0.1.0
+langchain-core==0.1.23
+tenacity==8.2.3
+
+# ========================================
+# VALIDAÇÃO DE DADOS
+# ========================================
+email-validator==2.1.0
+phonenumbers==8.13.27
+
+# ========================================
+# DEPENDÊNCIAS ESSENCIAIS
+# ========================================
+anyio==4.12.0
+click==8.1.8
+h11==0.16.0
+typing_extensions==4.15.0
+annotated-types==0.7.0
+
+# ========================================
+# OPCIONAIS (se usar PostgreSQL em produção)
+# ========================================
+# psycopg[binary]==3.3.0  # Descomente se for usar PostgreSQL
+# asyncpg==0.29.0         # Python 3.12 ou inferior
