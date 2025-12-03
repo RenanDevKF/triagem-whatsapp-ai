@@ -1,8 +1,11 @@
+"""
+Schemas para webhooks do WhatsApp.
+Estruturas de dados enviadas pelo WhatsApp Cloud API.
+"""
 
+from typing import Optional, List, Dict, Any
+from pydantic import BaseModel, Field, ConfigDict
 
-# ========================================
-# WEBHOOK SCHEMAS (WhatsApp)
-# ========================================
 
 class WhatsAppProfile(BaseModel):
     """Perfil do usuário no WhatsApp"""
@@ -63,7 +66,7 @@ class WhatsAppWebhookPayload(BaseModel):
 
 
 class WebhookVerification(BaseModel):
-    """Schema para verificação do webhook"""
+    """Schema para verificação do webhook (GET)"""
     mode: str = Field(..., alias="hub.mode")
     token: str = Field(..., alias="hub.verify_token")
     challenge: str = Field(..., alias="hub.challenge")
