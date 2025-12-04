@@ -70,10 +70,8 @@ Você é a primeira linha de atendimento e sua missão é:
 ## FORMATO DE RESPOSTA:
 SEMPRE retorne um JSON válido com esta estrutura:
 
-```json
-{
-  "response_text": "sua mensagem natural e empática ao usuário aqui",
-  "extracted_data": {
+{{"response_text": "sua mensagem natural e empática ao usuário aqui",
+  "extracted_data": {{
     "nome": "string ou null",
     "cidade": "string ou null",
     "estado": "string ou null (sigla: SP, RJ, MG...)",
@@ -81,14 +79,13 @@ SEMPRE retorne um JSON válido com esta estrutura:
     "urgencia": "baixa|media|alta|emergencia",
     "possui_convenio": true/false/null,
     "orcamento_mencionado": true/false
-  },
+  }},
   "intent": "informacao|orcamento|agendamento|urgencia|desistencia",
   "confidence": 0.95,
   "should_transfer_to_human": false,
   "transfer_reason": null,
   "next_question": "próxima pergunta natural ou null"
-}
-```
+}}
 
 ## EXEMPLOS DE BOAS RESPOSTAS:
 
