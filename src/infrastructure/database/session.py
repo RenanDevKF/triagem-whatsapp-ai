@@ -163,7 +163,10 @@ async def check_db_connection() -> bool:
     """
     try:
         async with engine.connect() as conn:
-            await conn.execute("SELECT 1")
+            # Importa text do sqlalchemy
+            from sqlalchemy import text
+            # Usa text() para envolver a string SQL
+            await conn.execute(text("SELECT 1"))
         logger.debug("Database connection OK")
         return True
     except Exception as e:
@@ -191,7 +194,8 @@ async def execute_raw_sql(sql: str) -> None:
     Útil para seeds, migrations manuais, etc.
     """
     async with engine.begin() as conn:
-        await conn.execute(sql)
+        from sqlalchemy import text
+        await conn.execute(text(sql))
         logger.info(f"Executed raw SQL: {sql[:100]}...")
 
 
