@@ -18,13 +18,13 @@ class MessageDirectionEnum(str, Enum):
 
 
 class MessageTypeEnum(str, Enum):
-    TEXT = "texto"
-    IMAGE = "imagem"
+    TEXT = "text"
+    IMAGE = "image" 
     AUDIO = "audio"
     VIDEO = "video"
-    DOCUMENT = "documento"
-    BUTTON_REPLY = "resposta_botao"
-
+    DOCUMENT = "document"
+    BUTTON_REPLY = "button"
+    LIST_REPLY = "interactive"
 
 # ========================================
 # SCHEMAS
