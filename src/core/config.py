@@ -82,12 +82,20 @@ class Settings(BaseSettings):
         return f"{self.whatsapp_api_url}/{self.whatsapp_phone_number_id}/messages"
     
     # ========================================
-    # IA (DEEPSEEK)
+    # IA (GEMINI - ÚNICO PROVEDOR)
     # ========================================
-    deepseek_api_key: str = Field(default="")
-    deepseek_api_base: str = Field(default="https://api.deepseek.com/v1")
-    deepseek_model: str = Field(default="deepseek-chat")
+    gemini_api_key: str = Field(default="")
+    gemini_model: str = Field(default="gemini-1.5-flash")
     
+    # ========================================
+    # IA (GEMINI - NOVO)
+    # ========================================
+    gemini_api_key: str = Field(default="")
+    gemini_model: str = Field(default="gemini-1.5-flash")
+    
+    # ========================================
+    # CONFIGURAÇÕES GERAIS DE IA
+    # ========================================
     ai_max_tokens: int = Field(default=500)
     ai_temperature: float = Field(default=0.7, ge=0.0, le=2.0)
     ai_timeout_seconds: int = Field(default=15)
@@ -97,7 +105,7 @@ class Settings(BaseSettings):
     # LÓGICA DE NEGÓCIO
     # ========================================
     covered_cities: str = Field(
-        default="São Paulo,Campinas,Santos,São José dos Campos"
+        default="Juiz de Fora, Rio de Janeiro, São Paulo"
     )
     
     @property
@@ -156,22 +164,46 @@ class Settings(BaseSettings):
         """Verifica se está em modo produção"""
         return self.environment.lower() in ("production", "prod")
     
+    # ========================================
+    # PROPRIEDADES DE IA (SIMPLIFICADAS)
+    # ========================================
+
+    @property
+    def ai_api_key(self) -> str:
+        """Retorna a chave da IA"""
+        return self.gemini_api_key
+
+    @property
+    def ai_provider(self) -> str:
+        """Retorna o provedor de IA"""
+        return "gemini" if self.gemini_api_key else ""
+
+    @property
+    def is_ai_configured(self) -> bool:
+        """Verifica se a IA está configurada"""
+        return bool(self.gemini_api_key)
+
+    @property
+    def ai_model(self) -> str:
+        """Retorna o modelo da IA"""
+        return self.gemini_model
+
     def get_cors_origins(self) -> List[str]:
         """Retorna lista de origens permitidas para CORS"""
         if self.allowed_origins == "*":
             return ["*"]
         return [origin.strip() for origin in self.allowed_origins.split(",")]
-    
+
     def model_dump_safe(self) -> dict:
         """Retorna configurações sem dados sensíveis"""
         data = self.model_dump()
         sensitive_keys = [
             "secret_key", "admin_api_key", "whatsapp_access_token",
-            "whatsapp_app_secret", "deepseek_api_key", "smtp_password",
-            "sentry_dsn", "database_url"
+            "whatsapp_app_secret", "gemini_api_key", 
+            "smtp_password", "sentry_dsn", "database_url"
         ]
         for key in sensitive_keys:
-            if key in data:
+            if key in data and data[key]:
                 data[key] = "***HIDDEN***"
         return data
 
@@ -197,7 +229,9 @@ if __name__ == "__main__":
     print(f"✅ Environment: {s.environment}")
     print(f"✅ Database: {s.database_url.split('@')[0]}...")
     print(f"✅ WhatsApp configurado: {bool(s.whatsapp_access_token)}")
-    print(f"✅ IA configurada: {bool(s.deepseek_api_key)}")
+    print(f"✅ IA configurada: {s.is_ai_configured}")
+    print(f"✅ Provedor de IA: {s.ai_provider}")
+    print(f"✅ Modelo: {s.ai_model}")
     print(f"✅ Cidades atendidas: {len(s.covered_cities_list)}")
     print("\n📋 Configurações completas (sem secrets):")
     import json
