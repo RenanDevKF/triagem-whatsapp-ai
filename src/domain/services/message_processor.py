@@ -12,7 +12,7 @@ from src.infrastructure.database.models import (
     Lead, Conversation, Message, Event,
     LeadStatus, ConversationStatus, MessageDirection, MessageType, EventType
 )
-from src.infrastructure.ai.client import get_ai_orchestrator
+from src.infrastructure.ai.client import get_ai_client
 from src.infrastructure.messaging.whatsapp_client import WhatsAppClient
 from src.domain.services.lead_classifier import LeadClassifier
 from src.core.config import get_settings
@@ -29,7 +29,7 @@ class MessageProcessor:
     
     def __init__(self, db: AsyncSession):
         self.db = db
-        self.ai = get_ai_orchestrator()
+        self.ai = get_ai_client()
         self.whatsapp = WhatsAppClient()
         self.classifier = LeadClassifier()
     
