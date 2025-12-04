@@ -140,15 +140,20 @@ class MessageProcessor:
                 extracted_data=ai_response.extracted_data.model_dump()
             )
             
-            # Envia via WhatsApp
-            sent = await self.whatsapp.send_text_message(
-                phone_number=phone_number,
-                message=response_text
-            )
-            
-            if sent and "id" in sent:
-                # Atualiza com ID do WhatsApp
-                ai_message.whatsapp_message_id = sent["id"]
+            # Envia via WhatsApp (apenas se token configurado)
+            if settings.whatsapp_access_token and settings.whatsapp_access_token.strip():
+                sent = await self.whatsapp.send_text_message(
+                    phone_number=phone_number,
+                    message=response_text
+                )
+                
+                if sent and "id" in sent:
+                    # Atualiza com ID do WhatsApp
+                    ai_message.whatsapp_message_id = sent["id"]
+                    ai_message.sent_at = datetime.now(UTC)
+            else:
+                logger.warning("⚠️ WhatsApp token not configured, skipping send")
+                # Marca como "enviado virtualmente" para testes
                 ai_message.sent_at = datetime.now(UTC)
             
             conversation.total_messages += 1
@@ -187,10 +192,11 @@ class MessageProcessor:
                 "Nossa equipe será notificada e entrará em contato em breve!"
             )
             
-            await self.whatsapp.send_text_message(
-                phone_number=phone_number,
-                message=error_message
-            )
+            if settings.whatsapp_access_token and settings.whatsapp_access_token.strip():
+                await self.whatsapp.send_text_message(
+                    phone_number=phone_number,
+                    message=error_message
+                )
             
             raise
         
