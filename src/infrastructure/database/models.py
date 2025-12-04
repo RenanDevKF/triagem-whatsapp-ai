@@ -67,13 +67,13 @@ class MessageDirection(str, Enum):
 
 class MessageType(str, Enum):
     """Tipo de mensagem do WhatsApp"""
-    TEXT = "texto"
-    IMAGE = "imagem"
+    TEXT = "text"
+    IMAGE = "image" 
     AUDIO = "audio"
     VIDEO = "video"
-    DOCUMENT = "documento"
-    BUTTON_REPLY = "resposta_botao"
-    LIST_REPLY = "resposta_lista"
+    DOCUMENT = "document"
+    BUTTON_REPLY = "button"
+    LIST_REPLY = "interactive"
 
 
 class EventType(str, Enum):
