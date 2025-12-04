@@ -48,8 +48,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         if not settings.whatsapp_access_token:
             logger.warning("⚠️  WhatsApp access token not configured")
         
-        if not settings.deepseek_api_key:
-            logger.warning("⚠️  DeepSeek API key not configured")
+        if not settings.gemini_api_key:
+            logger.warning("⚠️  Gemini API key not configured")
         
         logger.success(f"✅ {settings.app_name} is ready!")
         
