@@ -217,34 +217,30 @@ async def update_message_status(
 ) -> None:
     """
     Atualiza status de mensagem enviada (delivered, read, failed, etc).
+    
+    TODO: Implementar atualização de status quando precisar.
+    Por enquanto apenas logamos o evento.
     """
     try:
-        from src.infrastructure.database.repositories.message_repository import MessageRepository
-        from datetime import datetime
+        logger.info(f"Message {message_id} status: {status} at {timestamp}")
         
-        repo = MessageRepository(db)
-        message = await repo.get_by_whatsapp_id(message_id)
-        
-        if not message:
-            logger.warning(f"Message not found for status update: {message_id}")
-            return
-        
-        # Atualiza timestamps baseado no status
-        updates = {}
-        ts = datetime.fromtimestamp(int(timestamp))
-        
-        if status == "sent":
-            updates["sent_at"] = ts
-        elif status == "delivered":
-            updates["delivered_at"] = ts
-        elif status == "read":
-            updates["read_at"] = ts
-        elif status == "failed":
-            updates["failed_at"] = ts
-        
-        if updates:
-            await repo.update(message.id, **updates)
-            logger.debug(f"Message {message_id} status updated: {status}")
+        # TODO: Buscar e atualizar mensagem no banco
+        # from sqlalchemy import select, update
+        # from src.infrastructure.database.models import Message
+        # from datetime import datetime
+        # 
+        # result = await db.execute(
+        #     select(Message).where(Message.whatsapp_message_id == message_id)
+        # )
+        # message = result.scalar_one_or_none()
+        # 
+        # if message:
+        #     ts = datetime.fromtimestamp(int(timestamp))
+        #     if status == "delivered":
+        #         message.delivered_at = ts
+        #     elif status == "read":
+        #         message.read_at = ts
+        #     await db.commit()
         
     except Exception as e:
         logger.error(f"Error updating message status: {e}")
