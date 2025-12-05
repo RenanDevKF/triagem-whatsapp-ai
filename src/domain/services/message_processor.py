@@ -136,7 +136,7 @@ class MessageProcessor:
                 direction=MessageDirection.OUTBOUND,
                 content=response_text,
                 message_type=MessageType.TEXT,
-                ai_model="deepseek",
+                ai_model="gemini-2.5-flash",
                 extracted_data=ai_response.extracted_data.model_dump()
             )
             
@@ -271,9 +271,21 @@ class MessageProcessor:
     async def _validate_session(self, conversation: Conversation) -> None:
         """Valida se a sessão ainda está ativa"""
         
+        # ========== CORREÇÃO DO TIMEZONE ==========
+        current_time = datetime.now(UTC)
+        
+        # Garante que last_activity_at tenha timezone
+        last_activity = conversation.last_activity_at
+        if last_activity.tzinfo is None:
+            # Se não tiver timezone, assume UTC
+            last_activity = last_activity.replace(tzinfo=UTC)
+            # Atualiza no objeto também
+            conversation.last_activity_at = last_activity
+        # ==========================================
+        
         # Verifica timeout
         timeout = timedelta(minutes=settings.session_timeout_minutes)
-        if datetime.now(UTC) - conversation.last_activity_at > timeout:
+        if current_time - last_activity > timeout:
             conversation.status = ConversationStatus.EXPIRED
             raise SessionExpiredError(conversation.lead.phone_number)
         
