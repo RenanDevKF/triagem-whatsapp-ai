@@ -37,7 +37,7 @@ async def health_check():
         status = "unhealthy"
     
     # 2. IA Service (verifica se tem API key configurada)
-    checks["ai_service"] = bool(settings.deepseek_api_key)
+    checks["ai_service"] = bool(settings.gemini_api_key)
     if not checks["ai_service"]:
         status = "degraded"
     
